@@ -89,6 +89,13 @@ def get_args():
                         default=None,
                         action='store',
                         help='Name of the target VM')
+    
+    parser.add_argument('-g', '--get',
+                        required=False,
+                        dest='get',
+                        default=None,
+                        action='store',
+                        help='get values for:')
 
     parser.add_argument('-t', '--template',
                         required=False,
@@ -144,6 +151,7 @@ def get_args():
                         required=False,
                         action='store_true',
                         help='power on the VM after creation, default is Power Off')
+
 
 
 

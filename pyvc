@@ -1,4 +1,4 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyVC import pyvc_boss
+from PyVC import boss

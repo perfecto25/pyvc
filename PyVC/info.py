@@ -14,13 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-'''
-Python program for listing the vms on an ESX / vCenter host
-'''
+''' Python program for listing the vms on an ESX / vCenter host '''
 
 from __future__ import print_function
+from pyVmomi import vim
+import json
 
-def print_info(vm, target, depth=1):
+
+def PrintVmInfo(vm, vm_dict, depth=1):
     '''
     Print information for a particular virtual machine or recurse into a folder
     or vApp with depth protection
@@ -28,40 +29,55 @@ def print_info(vm, target, depth=1):
     maxdepth = 10
 
     # if this is a group it will have children. if it does, recurse into them
-    # and then return connect(host, user, password )
+    # and then return
     if hasattr(vm, 'childEntity'):
         if depth > maxdepth:
             return
         vmList = vm.childEntity
         for c in vmList:
-            print_info(c, target, depth+1)
+            PrintVmInfo(c, vm_dict, depth+1)
+        return
+
+   # if this is a vApp, it likely contains child VMs
+   # (vApps can nest vApps, but it is hardly a common usecase, so ignore that)
+    if isinstance(vm, vim.VirtualApp):
+        vmList = vm.vm
+        for c in vmList:
+            PrintVmInfo(c, vm_dict, depth + 1)
         return
 
     summary = vm.summary
-    if summary.config.name == target:
-        print("Name        : ", summary.config.name)
-        print("Path        : ", summary.config.vmPathName)
-        print("Guest       : ", summary.config.guestFullName)
-        annotation = summary.config.annotation
-        
-        if annotation != None and annotation != "":
-            print("Annotation : ", annotation)
-        
-        print("State       : ", summary.runtime.powerState)
 
-        if summary.guest != None:
-            ip = summary.guest.ipAddress
+    # add data to JSON output
+    vm_dict[summary.config.name] = {
+        'path': summary.config.vmPathName, 
+        'guest': summary.config.guestFullName,
+        'state': summary.runtime.powerState
+        }
 
+    annotation = summary.config.annotation
+
+    if annotation != None and annotation != "":
+        vm_dict[summary.config.name]['annotation'] = annotation
+
+    if summary.guest != None:
+        ip = summary.guest.ipAddress
         if ip != None and ip != "":
-            print("IP          : ", ip)
+            vm_dict[summary.config.name]['ip'] = ip
 
-        if summary.runtime.question != None:
-            print("Question  : ", summary.runtime.question.text)
-            print("")
+    if summary.runtime.question != None:
+        vm_dict[summary.config.name]['question'] = summary.runtime.question.text
 
-def get_vm_info(target, si):
-    print('---------------------------------------------')
+    return vm_dict
+
+# main function
+def get_all_vms(si):
+    '''
+    Simple command-line program for listing the virtual machines on a system.
+    '''
+
     content = si.RetrieveContent()
+    vm_dict = {}
 
     for child in content.rootFolder.childEntity:
         if hasattr(child, 'vmFolder'):
@@ -69,5 +85,39 @@ def get_vm_info(target, si):
             vmFolder = datacenter.vmFolder
             vmList = vmFolder.childEntity
             for vm in vmList:
-                print_info(vm, target)
+                PrintVmInfo(vm, vm_dict)
 
+    retval = json.dumps(vm_dict)
+    return retval
+
+
+# used by BOSS to display all VM info
+def display_all(retval):
+    data = json.loads(retval)
+    for name in data:
+        print('Name: %s' % name)
+        print('Path: %s' % data[name]['path'])
+        print('Guest: %s' % data[name]['guest'])
+        if 'annotation' in data[name].keys():
+            print('Annotation: %s' % data[name]['annotation'])
+        if 'ip' in data[name].keys():
+            print('IP: %s' % data[name]['ip'])
+        if 'question' in data[name].keys():
+            print('Question: %s' % data[name]['question'])
+        print('-------------------------------------')
+
+# used by BOSS to display specific VM info
+def display_vm(retval, vmname):
+    data = json.loads(retval)
+    for name in data:
+        if name == vmname:
+            print('Name: %s' % name)
+            print('Path: %s' % data[name]['path'])
+            print('Guest: %s' % data[name]['guest'])
+            if 'annotation' in data[name].keys():
+                print('Annotation: %s' % data[name]['annotation'])
+            if 'ip' in data[name].keys():
+                print('IP: %s' % data[name]['ip'])
+            if 'question' in data[name].keys():
+                print('Question: %s' % data[name]['question'])
+            print('-------------------------------------')

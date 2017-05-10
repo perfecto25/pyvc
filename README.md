@@ -46,19 +46,7 @@ sudo ln -s /home/user/pyvc/pyvc /usr/bin/pyvc
 
 **Actions:**
 
- - **INFO**
-    (*gets basic information about the VM*)
-    - Example: ```./pyvc -vc NYC -a info -vm nycweb01```
-    ```bash
-    Name        :  nycweb01
-    Path        :  [esx1-ssd] nyc_build/centos_template.vmx
-    Guest       :  CentOS 4/5/6/7 (64-bit)
-    State       :  poweredOn
-    IP          :  12.125.10.166
-    ```
-
-
-- **INFOALL** (*returns information on all VMs in datacenter*)
+- **INFO** (*returns information on all VMs in datacenter*)
   - Example: ```./pyvc -vc NYC -a infoall```
     ```bash
     getting info for all VMs..
@@ -72,9 +60,9 @@ sudo ln -s /home/user/pyvc/pyvc /usr/bin/pyvc
     Path       :  [nycesx-vol6] nyc_build/win2008r2.vmx
     Guest      :  Microsoft Windows Server 2008 R2 (64-bit
 
-    etc
+    et
     ```
-
+    pyvc -a infoall -vc NJO --get json | jq .
 
 - **CLONE** (*clone an existing VM or Template*)
   - Example: ```./pyvc -vc NYC -a clone -t ubuntu_template

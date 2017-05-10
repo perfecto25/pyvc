@@ -5,6 +5,7 @@ from __future__ import print_function
 import os
 import sys
 from PyVC import *
+import json
 
 
 ''' This script is the main router for all actions '''
@@ -34,20 +35,37 @@ si = connect(host, user, password )
 
 ##  ROUTE ACTIONS
 
-# info
+''' 
+INFO 
+'''
 if args.action == 'info':
-    if not args.vmname:
-        print('please provide target VM name: -vm VM-Name')
+    retval = get_all_vms(si)
+
+    # ALL
+    if args.get and args.get == 'all': # Print ALL information on ALL VMs
+        display_all(retval)
+
+    # NAMES
+    elif args.get and args.get == 'names': # Print just Names of VMs
+        data = json.loads(retval)
+        for name in data:
+            print(name)
+
+    # JSON
+    elif args.get and args.get == 'json': # dump full JSON output
+        print(retval)
+
+    # VM NAME
+    elif args.get: # get info for specific VM
+        display_vm(retval, args.get)
+
     else:
-        print('getting VM info for %s' % args.vmname)
-        get_vm_info(args.vmname, si)
+        print('please provide a "get" argument: --get')
 
-# infoall
-if args.action == 'infoall':
-    print('getting info for all VMs..')
-    get_all_vms(si)
 
-# clone
+'''
+CLONE 
+'''
 if args.action == 'clone':
     if not args.template:
         print('please provide a VM template to clone from: -t TemplateName')
