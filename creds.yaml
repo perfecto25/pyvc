@@ -1,0 +1,12 @@
+---
+# NJ Vcenter
+NJO:
+  hostname: njovc01.bidstrading.local
+  user: vagrant
+  password: ZAsocAt8z39aIUQJ9MLH
+
+# Texas Vcenter
+TEX:
+  hostname: texvc03.blah.com
+  user: blah
+  password: bleeeh
