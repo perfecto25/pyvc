@@ -4,3 +4,5 @@ requests
 suds>=0.4,<0.7
 vcrpy>=1.1.1
 PyYAML==3.10
+Flask==0.12.1
+

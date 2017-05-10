@@ -45,6 +45,7 @@ sudo ln -s /home/user/pyvc/pyvc /usr/bin/pyvc
 ```./pyvc (vCenter) (action) (additional)```
 
 **Actions:**
+
  - **INFO**
     (*gets basic information about the VM*)
     - Example: ```./pyvc -vc NYC -a info -vm nycweb01```
@@ -55,6 +56,8 @@ sudo ln -s /home/user/pyvc/pyvc /usr/bin/pyvc
     State       :  poweredOn
     IP          :  12.125.10.166
     ```
+
+
 - **INFOALL** (*returns information on all VMs in datacenter*)
   - Example: ```./pyvc -vc NYC -a infoall```
     ```bash
@@ -72,6 +75,7 @@ sudo ln -s /home/user/pyvc/pyvc /usr/bin/pyvc
     etc
     ```
 
+
 - **CLONE** (*clone an existing VM or Template*)
   - Example: ```./pyvc -vc NYC -a clone -t ubuntu_template
      -vm nycapp04 -dc NYC5```
@@ -87,24 +91,25 @@ sudo ln -s /home/user/pyvc/pyvc /usr/bin/pyvc
     cloning VM...
     ```
   Required parameters
-    - **-vc, --vcenter** Name of vCenter to connect to (from creds.yaml)
-    - **-a, --action** Action to take
-    - **-t, --template** Name of VM or Template from which to clone from
-    - **-vm, --vm-name** Name of target VM to be created
+    - *-vc, --vcenter* Name of vCenter to connect to (from creds.yaml)
+    - *-a, --action* Action to take
+    - *-t, --template* Name of VM or Template from which to clone from
+    - *-vm, --vm-name* Name of target VM to be created
   
   Optional parameters
-    - **-dc, --datacenter** Datacenter name of target cloned VM
-    - **-vmf, --vm-folder** VM folder name of target cloned VM
-    - **-ds, --datastore** Datastore name of target cloned VM
-    - **-c, --cluster** Cluster name of target cloned VM
-    - **-rp, --resource-pool** Resource Pool name of target cloned VM
-    - **--power-on** Turn cloned VM on after cloning (Default is off)
+    - *-dc, --datacenter* Datacenter name of target cloned VM
+    - *-vmf, --vm-folder* VM folder name of target cloned VM
+    - *-ds, --datastore* Datastore name of target cloned VM
+    - *-c, --cluster* Cluster name of target cloned VM
+    - *-rp, --resource-pool* Resource Pool name of target cloned VM
+    - *--power-on* Turn cloned VM on after cloning (Default is off)
 
 
 
 
 ## PyVC API
 in progress
+
 
 ## To Do
 package this into PyPI
