@@ -103,8 +103,8 @@ def clone(si, template, vmname, datacenter,
         try:
             clone_vm(content, template, vmname, si, datacenter,
                      vmfolder, datastore, cluster, rpool, power_on)
-        except:
-            print('There was an error cloning the VM, please check vCenter logs')
+        except IOError as e:
+            print(e)
     else:
         print('template not found')
 

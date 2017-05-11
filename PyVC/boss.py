@@ -12,7 +12,7 @@ import json
 
 args = get_args()
 
-allowed_actions = ['info', 'infoall', 'clone']
+allowed_actions = ['info', 'clone']
 
 # check action
 if not args.action in allowed_actions:
@@ -39,11 +39,11 @@ si = connect(host, user, password )
 INFO 
 '''
 if args.action == 'info':
-    retval = get_all_vms(si)
+    retval = get_info_json(si) # get total JSON object
 
     # ALL
     if args.get and args.get == 'all': # Print ALL information on ALL VMs
-        display_all(retval)
+        print(info.display_all(retval))
 
     # NAMES
     elif args.get and args.get == 'names': # Print just Names of VMs
@@ -57,7 +57,7 @@ if args.action == 'info':
 
     # VM NAME
     elif args.get: # get info for specific VM
-        display_vm(retval, args.get)
+        print(info.display_vm(retval, args.get))
 
     else:
         print('please provide a "get" argument: --get')
@@ -80,7 +80,7 @@ if args.action == 'clone':
         print('Cluster: %s' % args.cluster)
         print('Resource Pool: %s' % args.rpool)
         print('Power On: %s' % args.power_on)
-
+        print('cloning {0} to {1}'.format(args.template, args.vmname))
         clone(si, args.template, args.vmname, args.datacenter, args.vmfolder, 
               args.datastore, args.cluster, args.rpool, args.power_on)
 # etc

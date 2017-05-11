@@ -8,66 +8,28 @@ import atexit
 import sys
 import os
 import yaml
+import json
 import argparse
-
-def connect(host, user, password):
-    # Connect to VCENTER
-    try:
-        si = SmartConnectNoSSL(host=host, user=user, pwd=password)
-        atexit.register(Disconnect, si)
-        return si
-    except vim.fault.InvalidLogin:
-        raise SystemExit("Unable to connect to host with supplied credentials.")
-
-def get_config(*args):
-    conf_file = args[0]
-
-    # check if config file is present
-    if not os.path.exists(conf_file):
-        print('No config file present: %s' % conf_file)
-        sys.exit()
-
-    # read YAML
-    try:
-        with open(conf_file, 'r') as f:
-            conf = yaml.load(f)
-            argList = list(args)  # convert tuple to list
-            argList.pop(0)  # remove conf file from list
-
-            # create lookup path
-            parsepath = "conf"
-
-            for arg in argList:
-                parsepath = parsepath + "['" + arg + "']"
-
-            try:
-                return eval(parsepath)
-            except:
-                print('Error reading value for %s' % parsepath)
-                sys.exit()
-    except:
-        print('Error reading creds file')
-        sys.exit()
 
 
 # get arguments
 def get_args():
     ''' Get arguments '''
     parser = argparse.ArgumentParser(
-        prog='pyvc.py',
+        prog='pyvc',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description='arguments for PyVC',
         epilog='''\
         usage:
             get info for specific VM
-                >> ./pyvc -vc $vCenterName -a info -v $VM-Name
+                >> ./pyvc -vc vCenterName -a info --get vm12.corp.us
             
             get info on all VMs
-                >> ./pyvc -vc $vCenterName -a infoall
+                >> ./pyvc -vc vCenterName -a info --get all (to get JSON output, use --get json) (to get just Names, use --get names)    
             
             clone a VM
-                >> ./pyvc -vc $vCenterName -a clone -vm $TargetName -t $TemplateName 
-                optional arguments:-dc $DataCenterName -vmf $VM-FolderName -ds $DataStoreName -cn $ClusterName -rp $ResourcePool --power-on 
+                >> ./pyvc -vc vCenterName -a clone -vm TargetName -t TemplateName 
+                optional arguments:-dc DataCenterName -vmf VM-FolderName -ds DataStoreName -cn ClusterName -rp ResourcePool --power-on 
             
             etc etc
 
@@ -89,13 +51,13 @@ def get_args():
                         default=None,
                         action='store',
                         help='Name of the target VM')
-    
+
     parser.add_argument('-g', '--get',
                         required=False,
                         dest='get',
                         default=None,
                         action='store',
-                        help='get values for:')
+                        help='get values for: (all, names, specific vm-name, json)')
 
     parser.add_argument('-t', '--template',
                         required=False,
@@ -159,3 +121,46 @@ def get_args():
     args = parser.parse_args()
 
     return args
+
+
+
+def connect(host, user, password):
+    # Connect to VCENTER
+    try:
+        si = SmartConnectNoSSL(host=host, user=user, pwd=password)
+        atexit.register(Disconnect, si)
+        return si
+    except vim.fault.InvalidLogin:
+        raise SystemExit("Unable to connect to host with supplied credentials.")
+
+def get_config(*args):
+    conf_file = args[0]
+
+    # check if config file is present
+    if not os.path.exists(conf_file):
+        print('No config file present: %s' % conf_file)
+        sys.exit()
+
+    # read YAML
+    try:
+        with open(conf_file, 'r') as f:
+            conf = yaml.load(f)
+            argList = list(args)  # convert tuple to list
+            argList.pop(0)  # remove conf file from list
+
+            # create lookup path
+            parsepath = "conf"
+
+            for arg in argList:
+                parsepath = parsepath + "['" + arg + "']"
+            try:
+                return eval(parsepath)
+            except:
+                print('Error reading value for %s' % parsepath)
+                sys.exit()
+    except:
+        print('Error reading creds file')
+        sys.exit()
+
+
+
