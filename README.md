@@ -111,7 +111,7 @@ sudo ln -s /home/user/pyvc/pyvc /usr/bin/pyvc
 ___
 
 
-> **CLONE** - clones an existing VM or Template
+**CLONE** - clones an existing VM or Template
 > 
 >  Parameters: 
 > - -t, --template (VM Template)
@@ -119,7 +119,7 @@ ___
 > - -vm
 > - names
 
-  - Example: ```./pyvc -vc NYC -a clone -t ubuntu_template
+- Example: ```./pyvc -vc NYC -a clone -t ubuntu_template
      -vm nycapp04 -dc NYC5```
     ```bash
     VM Template: ubuntu_template
