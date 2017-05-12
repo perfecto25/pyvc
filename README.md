@@ -112,12 +112,6 @@ ___
 
 
 **CLONE** - clones an existing VM or Template
-> 
->  Parameters: 
-> - -t, --template (VM Template)
-> - -dc, --datacenter (DC to clone to)
-> - -vm
-> - names
 
 - Example: ```./pyvc -vc NYC -a clone -t ubuntu_template
      -vm nycapp04 -dc NYC5```
