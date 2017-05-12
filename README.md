@@ -175,7 +175,21 @@ to get only Names use ```"get":"names"```
 
 ---
 ### CLONE
-To clone an existing VM
+Clone an existing VM
+
+Required parameters
+  - *"vc"* Name of vCenter to connect to (from creds.yaml)
+  - *"template"* Name of VM or Template from which to clone from
+  - *"vm"* Name of target VM to be created
+  
+Optional parameters
+
+  - *"datacenter"* Datacenter name of target cloned VM
+  - *"vmfolder"* VM folder name of target cloned VM
+  - *"datastore"* Datastore name of target cloned VM
+  - *"cluster"* Cluster name of target cloned VM
+  - *"rpool"* Resource Pool name of target cloned VM
+  - *"power_on"* set to True to leave cloned VM on (to leave Off, dont include power_on in your json request data)
 
 Example: clone 
 ```bash
@@ -196,7 +210,5 @@ Output
 }
 ```
 
-
-
 ## To Do
-package this into PyPI, add more Actions
+package this into PyPI, add more Actions, add user auth
