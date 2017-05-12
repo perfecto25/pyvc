@@ -114,7 +114,7 @@ ___
 **CLONE** - clones an existing VM or Template
 
 - Example: ```./pyvc -vc NYC -a clone -t ubuntu_template
-     -vm nycapp04 -dc NYC5```
+     -vm nycapp04 -dc NYC5 --power-on```
     ```bash
     VM Template: ubuntu_template
     Target VM name: nycapp04
