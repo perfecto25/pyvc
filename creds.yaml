@@ -1,9 +1,9 @@
 ---
-# NJ Vcenter
-NJO:
-  hostname: njovc01.bidstrading.local
-  user: vagrant
-  password: ZAsocAt8z39aIUQJ9MLH
+# NYC Vcenter
+NYC:
+  hostname: nycvc.company.com
+  user: vcuser
+  password: ch0c0l@te
 
 # Texas Vcenter
 TEX:

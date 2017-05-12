@@ -162,5 +162,3 @@ def get_config(*args):
         print('Error reading creds file')
         sys.exit()
 
-
-

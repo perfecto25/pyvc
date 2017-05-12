@@ -46,7 +46,7 @@ def makeDictionary(vm, vm_dict, depth=1):
 
     # add data to JSON output
     vm_dict[summary.config.name] = {
-        'path': summary.config.vmPathName, 
+        'path': summary.config.vmPathName,
         'guest': summary.config.guestFullName,
         'state': summary.runtime.powerState
         }

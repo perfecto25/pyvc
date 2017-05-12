@@ -4,8 +4,6 @@ from __future__ import print_function
 
 from flask import Flask, request, abort
 import os
-import sys
-import io
 import json
 import logging
 
@@ -37,8 +35,8 @@ app = Flask(__name__)
 # ERROR & EXCEPTION
 @app.errorhandler(404)
 def page_not_found(error):
-	app.logger.error('Page not found: %s', (request.path))
-	return 'Error with request, please check your request call'
+    app.logger.error('Page not found: %s', (request.path))
+    return 'Error with request, please check your request call'
 
 @app.errorhandler(Exception)
 def unhandled_exception(e):
